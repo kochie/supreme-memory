@@ -18,6 +18,10 @@
         "react"
     ],
     "rules": {
+        "block-spacing": [
+            "error", 
+            "always"
+        ],
         "indent": [
             "error",
             "tab"
