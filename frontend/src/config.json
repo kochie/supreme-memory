@@ -1,0 +1,145 @@
+{
+	"title": "UNIHACK email signup",
+	"steps": [
+		{
+			"service": "info",
+			"title": "Setting Up",
+			"required": false,
+			"content": "Welcome to UNIHACK onboarding. This site will help you create and link all the acounts needed to get up and running with the UNIHACK organisation."
+		},
+		{
+			"service": "gSuite",
+			"stepImage": {
+				"type": "url",
+				"source": "http://diylogodesigns.com/blog/wp-content/uploads/2016/04/google-logo-icon-PNG-Transparent-Background-768x768.png"
+			},
+			"title": "Getting your email account",
+			"content": "First thing we'll do is set up your email account. Fill in this form to get a new email address.",
+			"required": true,
+			"form": {
+				"fields": [
+					{ 
+						"title": "First Name",
+						"id": "gsuite-firstName",
+						"type": "text",
+						"required": true
+					},
+					{ 
+						"title": "Second Name",
+						"id": "gsuite-secondName",
+						"type": "text",
+						"required": true
+					},
+					{ 
+						"title": "Alternative Email Address",
+						"id": "gsuite-altEmailAddress",
+						"type": "email",
+						"fullWidth": true,
+						"helperText": "Alternative email used to recover password.",
+						"required": true
+					},
+					{
+						"title": "Contact Number",
+						"id": "gsuite-contactNumber",
+						"type": "tel",
+						"required": false
+					},
+					{ 
+						"title": "UNIHACK Email Address",
+						"id": "gsuite-emailAddress",
+						"required": true,
+						"type": "emailSelection",
+						"defaultFormat": "$[l1].$[l2]@$[a1]",
+						"subKeyFields": [
+							{
+								"subkey": "a1",
+								"fn": "split",
+								"args": ["@", 1],
+								"keyfield": "gsuite-emailAddress"
+							},
+							{
+								"subkey": "l1",
+								"fn": "lower",
+								"keyfield": "gsuite-firstName"
+							},
+							{
+								"subkey": "l2",
+								"fn": "lower",
+								"keyfield": "gsuite-secondName"
+							}
+						],
+						"items": [
+							{
+								"label": "unihack.net",
+								"value": "unihack.net"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"service": "github",
+			"stepImage": { 
+				"type": "icon",
+				"source": ["fab", "github"]
+			},
+			"title": "GitHub Intergration",
+			"content": "Now you can link your GiHub account to the UNIHACK organisation, this step is optional so you don't need to complete it.",
+			"required": false,
+			"form": {
+				"fields": [
+					{
+						"title": "GitHub Username",
+						"id": "github-username",
+						"type": "text",
+						"required": false
+					}
+				]
+			}
+		},
+		{
+			"service": "zeplin",
+			"stepImage": {
+				"type": "url",
+				"source": "https://zeplin.io/img/favicon/256x256.png"
+			},
+			"title": "Zeplin Intergration",
+			"content": "If you have a Zeplin account you can connect it here and be added ot the UNIHACK organistaion on Zeplin.",
+			"required": false,
+			"form": {
+				"fields": [
+					{
+						"title": "Zeplin Username",
+						"id": "zeplin-username",
+						"type": "text",
+						"required": false
+					}
+				]
+			}
+		},
+		{
+			"service": "slack",
+			"stepImage": {
+				"type": "url",
+				"source": "https://seeklogo.com/images/S/slack-logo-DE4445077C-seeklogo.com.png"
+			},
+			"title": "Slack Intergration",
+			"content": "We'll now create a slack account using your UNIHACK email address",
+			"required": true,
+			"form": {
+				"fields": [
+					{
+						"title": "Email Address",
+						"id": "slack-emailAddress",
+						"type": "text",
+						"fillFromOther": "email",
+						"defaultFormat": "${gsuite-emailAddress}",
+						"noEdit": true,
+						"required": true
+					}
+				]
+			}
+		}
+	]
+}
