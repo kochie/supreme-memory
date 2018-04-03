@@ -1,12 +1,21 @@
 import React from "react";
 import { withStyles } from "material-ui/styles";
-import TextField from "material-ui/TextField";
+// import TextField from "material-ui/TextField";
+import { TextValidator } from "react-material-ui-form-validator";
 import MenuItem from "material-ui/Menu/MenuItem";
 import PropTypes from "prop-types";
 
 const Field = ({field, classes, handleChange, value}) => {
+	const validators = [];
+	const errorMessages = [];
+    
+	if (field.required) {
+		validators.push("required");
+		errorMessages.push("This field is required");
+	}
+
 	return (
-		<TextField	
+		<TextValidator	
 			id={field.id}
 			label={field.title}
 			select={field.type === "select"}
@@ -22,6 +31,8 @@ const Field = ({field, classes, handleChange, value}) => {
 					className: classes.menu,
 				},
 			}}
+			validators={validators}
+			errorMessages={errorMessages}
 			margin="normal"
 		>
 			{field.items && field.items.map(option => (
@@ -29,7 +40,7 @@ const Field = ({field, classes, handleChange, value}) => {
 					{option.label}
 				</MenuItem>
 			))}
-		</TextField>
+		</TextValidator>
 	);
 };
 

@@ -9,6 +9,7 @@ import Grid from "material-ui/Grid";
 import StepIcon from "./StepIcon";
 import Field from "./Field";
 import EmailSelectionField from "./EmailSelectionField";
+import { ValidatorForm } from "react-material-ui-form-validator";
 
 function addToDepends(depends, defaultFormat, fieldID, subkeyfields = []){
 	const fields = [...(new Set(defaultFormat.match(/\${[\w-]*}/g)))].map(exp=>exp.slice(2,-1));
@@ -173,7 +174,7 @@ class Form extends React.Component {
 											</Grid>
 											{step.form ? <Grid container direction={"row"}>
 												<Grid item>
-													<form autoComplete={"off"}>
+													<ValidatorForm autoComplete={"off"}>
 														{step.form.fields.map((field, index) => {
 															if (field.type === "emailSelection"){
 																return <EmailSelectionField 
@@ -190,7 +191,7 @@ class Form extends React.Component {
 																handleChange={this.state.onChange[field.id]} 
 															/>;
 														})}
-													</form>
+													</ValidatorForm>
 												</Grid>
 											</Grid> : null}
 											<div className={classes.actionsContainer}>
