@@ -1,6 +1,5 @@
 import React from "react";
 import { withStyles } from "material-ui/styles";
-// import TextField from "material-ui/TextField";
 import { TextValidator } from "react-material-ui-form-validator";
 import MenuItem from "material-ui/Menu/MenuItem";
 import PropTypes from "prop-types";
@@ -15,14 +14,13 @@ const Field = ({field, classes, handleChange, value}) => {
 	let ref = React.createRef();    
 	
 	if (field.required) {
-		console.log("required");
 		validators.push("minStringLength:1");
 		errorMessages.push("This field is required");
 	}
 
 	if (field.type === "email") {
 		validators.push("isEmail");
-		errorMessages.push("Email");
+		errorMessages.push("Must be a valid email address");
 	}
 
 	return (
@@ -34,7 +32,7 @@ const Field = ({field, classes, handleChange, value}) => {
 			name={field.id}
 			select={field.type === "select"}
 			className={classes.textField}
-			helperText={field.helperText}
+   			helperText={field.helperText}
 			fullWidth={field.fullWidth ? true : false}
 			type={field.type}
 			required={field.required}
