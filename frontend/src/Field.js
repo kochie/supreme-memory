@@ -5,19 +5,33 @@ import { TextValidator } from "react-material-ui-form-validator";
 import MenuItem from "material-ui/Menu/MenuItem";
 import PropTypes from "prop-types";
 
+const handleBlur = (event, ref) => {
+	ref.current.validate(event.target.value);
+};
+
 const Field = ({field, classes, handleChange, value}) => {
 	const validators = [];
 	const errorMessages = [];
-    
+	let ref = React.createRef();    
+	
 	if (field.required) {
-		validators.push("required");
+		console.log("required");
+		validators.push("minStringLength:1");
 		errorMessages.push("This field is required");
+	}
+
+	if (field.type === "email") {
+		validators.push("isEmail");
+		errorMessages.push("Email");
 	}
 
 	return (
 		<TextValidator	
 			id={field.id}
+			ref={ref}
+			onBlur={event => handleBlur(event, ref)}
 			label={field.title}
+			name={field.id}
 			select={field.type === "select"}
 			className={classes.textField}
 			helperText={field.helperText}

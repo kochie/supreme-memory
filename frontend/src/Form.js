@@ -174,7 +174,11 @@ class Form extends React.Component {
 											</Grid>
 											{step.form ? <Grid container direction={"row"}>
 												<Grid item>
-													<ValidatorForm autoComplete={"off"}>
+													<ValidatorForm
+														onSubmit={()=>{}} 
+														autoComplete={"off"}
+														instantValidate={false}
+													>
 														{step.form.fields.map((field, index) => {
 															if (field.type === "emailSelection"){
 																return <EmailSelectionField 
