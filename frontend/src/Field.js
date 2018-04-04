@@ -5,7 +5,7 @@ import MenuItem from "material-ui/Menu/MenuItem";
 import PropTypes from "prop-types";
 
 const handleBlur = (event, ref) => {
-	ref.current.validate(event.target.value);
+	ref.current.validate(event.target.value, true);
 };
 
 const Field = ({field, classes, handleChange, value}) => {
@@ -14,7 +14,7 @@ const Field = ({field, classes, handleChange, value}) => {
 	let ref = React.createRef();    
 	
 	if (field.required) {
-		validators.push("minStringLength:1");
+		validators.push("required");
 		errorMessages.push("This field is required");
 	}
 
@@ -28,11 +28,12 @@ const Field = ({field, classes, handleChange, value}) => {
 			id={field.id}
 			ref={ref}
 			onBlur={event => handleBlur(event, ref)}
+			onFocus={() => ref.current.setState({isValid: true})}
 			label={field.title}
 			name={field.id}
 			select={field.type === "select"}
 			className={classes.textField}
-   			helperText={field.helperText}
+			helperText={field.helperText}
 			fullWidth={field.fullWidth ? true : false}
 			type={field.type}
 			required={field.required}

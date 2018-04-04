@@ -46,8 +46,10 @@ class Form extends React.Component {
 			onChange: this.makeChangeFn(props.steps),
 			defaultFormats: this.getFormats(props.steps),
 			dependentFields: this.getDependents(props.steps),
-			form: this.getFormData(props.steps)
+			form: this.getFormData(props.steps),
 		};
+
+		this.formRef =  React.createRef();
 	}
 
 	updateDependents(value, id) {
@@ -140,6 +142,7 @@ class Form extends React.Component {
 		return (event) => {
 			const value = event.target.value;
 			const depends = this.updateDependents(value.trim(), id);
+			this.formRef.current.resetValidations();
 			this.setState((prevState) => ({form: 
 				{ ...prevState.form, [id]: value, ...depends}
 			}));
@@ -154,31 +157,37 @@ class Form extends React.Component {
 			<Grid container justify={"center"} className={classes.gridRoot}>
 				<Grid item xs={12} sm={10} lg={5}>
 					<div className={activeStep !== steps.length ? classes.root : classes.rootEnd}>
-						<Stepper activeStep={activeStep} orientation="vertical">
-							{steps.map((step, index) => {
-								return (
-									<Step key={index} className={classes.step}>
-										<StepLabel>{step.title}</StepLabel>
-										<StepContent>
-											<Grid className={classes.content} direction={"row"} alignItems={"center"} container>
-												{step.stepImage ? ( 
-													<Grid sm={2} item container justify={"center"}>
-														<Grid item>
-															<StepIcon stepImage={step.stepImage}/>
+						<ValidatorForm
+							onSubmit={()=>{}} 
+							autoComplete={"off"}
+							instantValidate={false}
+							ref={this.formRef}
+						>
+							<Stepper activeStep={activeStep} orientation="vertical">
+								{steps.map((step, index) => {
+									return (
+										<Step key={index} className={classes.step}>
+											<StepLabel>{step.title}</StepLabel>
+											<StepContent>
+												<Grid className={classes.content} direction={"row"} alignItems={"center"} container>
+													{step.stepImage ? ( 
+														<Grid sm={2} item container justify={"center"}>
+															<Grid item>
+																<StepIcon stepImage={step.stepImage}/>
+															</Grid>
 														</Grid>
+													) : null }
+													<Grid item sm={step.stepImage ? 10 : 12}>
+														<Typography>{step.content}</Typography>
 													</Grid>
-												) : null }
-												<Grid item sm={step.stepImage ? 10 : 12}>
-													<Typography>{step.content}</Typography>
 												</Grid>
-											</Grid>
-											{step.form ? <Grid container direction={"row"}>
-												<Grid item>
-													<ValidatorForm
+												{step.form ? <Grid container direction={"row"}>
+													<Grid item>
+														{/*<ValidatorForm
 														onSubmit={()=>{}} 
 														autoComplete={"off"}
 														instantValidate={false}
-													>
+													>*/}
 														{step.form.fields.map((field, index) => {
 															if (field.type === "emailSelection"){
 																return <EmailSelectionField 
@@ -189,35 +198,36 @@ class Form extends React.Component {
 																/>;
 															}
 															return <Field
-																key={index} 
+																key={index}
 																field={field} 
 																value={this.state.form[field.id]} 
 																handleChange={this.state.onChange[field.id]} 
 															/>;
 														})}
-													</ValidatorForm>
-												</Grid>
-											</Grid> : null}
-											<div className={classes.actionsContainer}>
-												<div>
-													<Button
-														disabled={activeStep === 0}
-														onClick={() => this.handleBack()}
-														className={classes.button}
-													>Back</Button>
-													<Button
-														variant="raised"
-														color="primary"
-														onClick={() => this.handleNext()}
-														className={classes.button}
-													>{activeStep === steps.length - 1 ? "Finish" : "Next"}</Button>
+														{/*</ValidatorForm>*/}
+													</Grid>
+												</Grid> : null}
+												<div className={classes.actionsContainer}>
+													<div>
+														<Button
+															disabled={activeStep === 0}
+															onClick={() => this.handleBack()}
+															className={classes.button}
+														>Back</Button>
+														<Button
+															variant="raised"
+															color="primary"
+															onClick={() => this.handleNext()}
+															className={classes.button}
+														>{activeStep === steps.length - 1 ? "Finish" : "Next"}</Button>
+													</div>
 												</div>
-											</div>
-										</StepContent>
-									</Step>
-								);
-							})}
-						</Stepper>
+											</StepContent>
+										</Step>
+									);
+								})}
+							</Stepper>
+						</ValidatorForm>
 						{activeStep === steps.length && (
 							<Paper square elevation={0} className={classes.resetContainer}>
 								<Typography>All steps completed - you&quot;re finished</Typography>
