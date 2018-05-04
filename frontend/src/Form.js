@@ -14,10 +14,12 @@ import { ValidatorForm } from "react-material-ui-form-validator";
 function addToDepends(depends, defaultFormat, fieldID, subkeyfields = []){
 	const fields = [...(new Set(defaultFormat.match(/\${[\w-]*}/g)))].map(exp=>exp.slice(2,-1));
 	fields.forEach(field => {
-		depends[field] = depends.field ? [...depends[field], fieldID] : [fieldID];
+		if (fieldId !== field) {
+			depends[field] = depends[field] ? [...depends[field], fieldID] : [fieldID];
+		}
 	});
 	subkeyfields.forEach(subkey => {
-		if (fieldID !== subkeyfields.keyfield) {
+		if (fieldID !== subkey.keyfield) {
 			depends[subkey.keyfield] = depends[subkey.keyfield] ? [...depends[subkey.keyfield], fieldID] : [fieldID];
 		}
 	});
